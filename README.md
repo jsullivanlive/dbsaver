@@ -9,5 +9,6 @@ Ideas:
 - AI powered admin assistant which learns from all admin changes in all orgs and recommends fields, reports, and workflows to create
 - machine learning wizard to feed data into common regression algos
 - faster salesforce mobile app
+- more open/transparent salesforce appexchange 
 
 License: AGPLv3
