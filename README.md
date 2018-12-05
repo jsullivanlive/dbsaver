@@ -8,5 +8,6 @@ Ideas:
 - backup tool so you can own your data backups
 - AI powered admin assistant which learns from all admin changes in all orgs and recommends fields, reports, and workflows to create
 - machine learning wizard to feed data into common regression algos
+- faster salesforce mobile app
 
 License: AGPLv3
