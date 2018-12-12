@@ -4,6 +4,7 @@ TODO: pick an idea
 
 Ideas:
 
+- salesforce benchmarking tool (to know if your instance is slow)
 - super user tool which gives you total visibility into your org and anything that's happening
   - alert for any security weirdness
   - get proactive notifications if someone else changed a lot of records in your org
@@ -18,6 +19,5 @@ Ideas:
 - more open/transparent salesforce appexchange 
 - open source esignature + payment page hosted on force.com sites so you can just install and get going selling stuff instead of having to buy docusign, integrate, then figure out the payment stuff, etc.  
 - markov chains to predict the next thing that is likely to happen to a record when you're viewing it
-
 
 License: AGPLv3
