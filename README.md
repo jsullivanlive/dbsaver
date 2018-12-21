@@ -6,13 +6,13 @@ Learn all the key things about your org(s), check performance, know in advance a
 
 ## TODO
 
-- salesforce auth
-- new logins
-- audit trail alerts
-- strange IPs
-- large loads alert
-- largest approval process bottlenecks alert
-- stale records alerts
+- [x] salesforce auth
+- [ ] new logins
+- [ ] audit trail alerts
+- [ ] strange IPs
+- [ ] large loads alert
+- [ ] largest approval process bottlenecks alert
+- [ ] stale records alerts
 
 ### Original Ideas:
 
