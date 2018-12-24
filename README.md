@@ -7,7 +7,9 @@ Learn all the key things about your org(s), check performance, know in advance a
 ## TODO
 
 - [x] salesforce auth
-- [ ] new logins
+- [ ] send email when managed packages are updated
+- [ ] send email when tests fail
+- [ ] send email about new logins
 - [ ] audit trail alerts
 - [ ] strange IPs
 - [ ] large loads alert
