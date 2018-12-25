@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 4200;
 const cors = require("cors");
 const session = require("express-session");
 const jsforce = require("jsforce");
+const AWS = require("aws-sdk");
+const s3 = new AWS.S3();
 
 app.set("trust proxy", 1);
 app.use(
@@ -58,6 +60,15 @@ function getConnection(session) {
 async function q(session, soql) {
   return getConnection(session).query(soql);
 }
+
+app.get("/api/user_count", async (req, res) => {
+  s3.listObjectsV2({ Bucket: "officer-k", Prefix: "salesforce/" })
+    .promise()
+    .then(buckets => {
+      res.json(buckets.KeyCount);
+    })
+    .catch(e => res.status(400).json({ error: e }));
+});
 
 app.get("/api/profile", async (req, res) => {
   if (!req.session.accessToken) {

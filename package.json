@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/jsullivanlive/officer-k#readme",
   "dependencies": {
+    "aws-sdk": "^2.382.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-session": "^1.15.6",

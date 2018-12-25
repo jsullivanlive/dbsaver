@@ -4,17 +4,30 @@ Salesforce admin/consultant toolkit
 
 Learn all the key things about your org(s), check performance, know in advance about configuration issues, etc.
 
+## Dev
+
+    nvm use # optional
+    npm i
+    nf run nodemon index.js # "nf run" first or else .env isn't applied
+
 ## TODO
 
 - [x] salesforce auth
+- [ ] alert about new users being created, especially ones with bigger privs
+- [ ] send email when new oauths are being used a lot
 - [ ] send email when managed packages are updated
-- [ ] send email when tests fail
+- [ ] send email when tests fail and say what was in the audit trail
 - [ ] send email about new logins
 - [ ] audit trail alerts
 - [ ] strange IPs
 - [ ] large loads alert
 - [ ] largest approval process bottlenecks alert
 - [ ] stale records alerts
+- [ ] new reports/dashboards
+- [ ] stats borrowed from logz, checkmarx, tinfoil, etc.
+- [ ] dead man switch
+- [ ] load testing
+- [ ] transaction timing
 
 ### Original Ideas:
 
