@@ -40,23 +40,25 @@ app.get("/auth/callback", async (req, res) => {
   try {
     let userInfo = await conn.authorize(code);
   } catch (e) {
-    res
+    return res
       .status(400)
       .send(
         `error connecting to salesforce, <a href="/auth">click here to try again</a>`
       );
-    return console.error("This error is in the auth callback: " + err);
   }
 
-  req.session.accessToken = conn.accessToken;
-  req.session.instanceUrl = conn.instanceUrl;
-  req.session.refreshToken = conn.refreshToken;
-
   // save to s3
-  let fileName = "salesforce/orgid/userid/auth/timestamp";
+
+  const u = conn.userInfo;
+
+  if (!u.id || !u.organizationId)
+    return res.status(400).send("userInfo invalid");
+
+  const fileName = `salesforce/${u.organizationId}/${u.id}/auth`;
 
   let { instanceUrl, accessToken, refreshToken, userInfo } = conn;
   let authToSave = { instanceUrl, accessToken, refreshToken, userInfo };
+
   await s3
     .putObject({
       Bucket: process.env.S3_BUCKET_NAME,
@@ -64,6 +66,12 @@ app.get("/auth/callback", async (req, res) => {
       Body: JSON.stringify(authToSave)
     })
     .promise();
+
+  req.session.path = fileName;
+
+  req.session.accessToken = conn.accessToken;
+  req.session.instanceUrl = conn.instanceUrl;
+  req.session.refreshToken = conn.refreshToken;
 
   res.redirect("/home");
 });
@@ -87,6 +95,11 @@ app.get("/api/user_count", async (req, res) => {
       res.json(buckets.KeyCount);
     })
     .catch(e => res.status(400).json({ error: e }));
+});
+
+// JUST FOR TESTING
+app.get("/api/session", async (req, res) => {
+  res.json(req.session);
 });
 
 app.get("/api/profile", async (req, res) => {
