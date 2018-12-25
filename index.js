@@ -67,8 +67,7 @@ app.get("/auth/callback", async (req, res) => {
     })
     .promise();
 
-  req.session.path = fileName;
-
+  req.session.keyPrefix = fileName;
   req.session.accessToken = conn.accessToken;
   req.session.instanceUrl = conn.instanceUrl;
   req.session.refreshToken = conn.refreshToken;
@@ -95,6 +94,43 @@ app.get("/api/user_count", async (req, res) => {
       res.json(buckets.KeyCount);
     })
     .catch(e => res.status(400).json({ error: e }));
+});
+
+app.get("/api/settings", async (req, res) => {
+  // TODO implement auth redirect in middleware
+  if (!req.session.keyPrefix) {
+    return res.redirect("/auth");
+  }
+
+  // TODO enforce schema + defaults
+
+  let content = await s3
+    .getObject({
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: path.join(req.session.keyPrefix, "settings")
+    })
+    .promise();
+
+  console.log(content.Body.toString());
+
+  res.send(content.Body.toString());
+});
+
+app.post("/api/settings", async (req, res) => {
+  if (!req.session.keyPrefix) {
+    return res.redirect("/auth");
+  }
+  // todo enfore schema, size
+  // todo get settings and merge json data so we can toggle individual settings
+  await s3
+    .putObject({
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: path.join(req.session.keyPrefix, "settings"),
+      Body: JSON.stringify(req.body)
+    })
+    .promise()
+    .then(_ => res.send("ok"))
+    .catch(e => res.status(400).json({ error: "error saving settings: " + e }));
 });
 
 // JUST FOR TESTING
