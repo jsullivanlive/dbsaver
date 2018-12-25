@@ -33,20 +33,39 @@ app.get("/auth", (req, res) => {
   res.redirect(oauth2.getAuthorizationUrl({ scope: "api refresh_token" }));
 });
 
-app.get("/auth/callback", (req, res) => {
+app.get("/auth/callback", async (req, res) => {
   const code = req.query.code;
   if (!code) return res.status(400).send("missing code");
   const conn = new jsforce.Connection({ oauth2: oauth2 });
-  conn.authorize(code, (err, userInfo) => {
-    if (err) {
-      res.status(400).send("error connecting to salesforce");
-      return console.error("This error is in the auth callback: " + err);
-    }
-    req.session.accessToken = conn.accessToken;
-    req.session.instanceUrl = conn.instanceUrl;
-    req.session.refreshToken = conn.refreshToken;
-    res.redirect("/home");
-  });
+  try {
+    let userInfo = await conn.authorize(code);
+  } catch (e) {
+    res
+      .status(400)
+      .send(
+        `error connecting to salesforce, <a href="/auth">click here to try again</a>`
+      );
+    return console.error("This error is in the auth callback: " + err);
+  }
+
+  req.session.accessToken = conn.accessToken;
+  req.session.instanceUrl = conn.instanceUrl;
+  req.session.refreshToken = conn.refreshToken;
+
+  // save to s3
+  let fileName = "salesforce/orgid/userid/auth/timestamp";
+
+  let { instanceUrl, accessToken, refreshToken, userInfo } = conn;
+  let authToSave = { instanceUrl, accessToken, refreshToken, userInfo };
+  await s3
+    .putObject({
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: fileName,
+      Body: JSON.stringify(authToSave)
+    })
+    .promise();
+
+  res.redirect("/home");
 });
 
 function getConnection(session) {
