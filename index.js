@@ -2,19 +2,19 @@ const path = require("path");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const PORT = process.env.PORT || 4200;
+const PORT = process.env.PORT || 5000;
 const cors = require("cors");
-const session = require("express-session");
+const cookieSession = require("cookie-session");
 const jsforce = require("jsforce");
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
+const request = require("request");
 
 app.set("trust proxy", 1);
 app.use(
-  session({
-    secret: process.env.COOKIE_SECRET || "owijoIJFOEFJE*083839*#F#<3",
-    resave: true,
-    saveUninitialized: true
+  cookieSession({
+    name: "session",
+    keys: [process.env.COOKIE_SECRET || "owijoIJFOEFJE*083839*#F#<3", "key2"]
   })
 );
 
@@ -99,7 +99,7 @@ app.get("/api/user_count", async (req, res) => {
 app.get("/api/settings", async (req, res) => {
   // TODO implement auth redirect in middleware
   if (!req.session.keyPrefix) {
-    return res.redirect("/auth");
+    return res.status(401).send({ error: "auth required" });
   }
 
   // TODO enforce schema + defaults
@@ -147,9 +147,12 @@ app.get("/api/profile", async (req, res) => {
   return res.json(await q(req.session, soql));
 });
 
-app.use(express.static(path.join(__dirname, "frontend/build")));
+// app.use(express.static(path.join(__dirname, "frontend/build")));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+  // res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+  var newurl = "http://localhost:5100" + req.url;
+  console.log(newurl);
+  request(newurl).pipe(res);
 });
 
 app.listen(PORT, function() {
