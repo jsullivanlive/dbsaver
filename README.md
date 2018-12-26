@@ -8,7 +8,7 @@ Learn all the key things about your org(s), check performance, know in advance a
 
     nvm use # optional
     npm i
-    nf run nodemon index.js # "nf run" first or else .env isn't applied
+    nf start -j Procfile-dev
 
 ## TODO
 

@@ -54,7 +54,8 @@ app.get("/auth/callback", async (req, res) => {
   if (!u.id || !u.organizationId)
     return res.status(400).send("userInfo invalid");
 
-  const fileName = `salesforce/${u.organizationId}/${u.id}/auth`;
+  const keyPrefix = path.join("salesforce", u.organizationId, u.id);
+  const fileName = path.join(keyPrefix, "auth");
 
   let { instanceUrl, accessToken, refreshToken, userInfo } = conn;
   let authToSave = { instanceUrl, accessToken, refreshToken, userInfo };
@@ -67,7 +68,7 @@ app.get("/auth/callback", async (req, res) => {
     })
     .promise();
 
-  req.session.keyPrefix = fileName;
+  req.session.keyPrefix = keyPrefix;
   req.session.accessToken = conn.accessToken;
   req.session.instanceUrl = conn.instanceUrl;
   req.session.refreshToken = conn.refreshToken;
@@ -122,15 +123,25 @@ app.post("/api/settings", async (req, res) => {
   }
   // todo enfore schema, size
   // todo get settings and merge json data so we can toggle individual settings
-  await s3
-    .putObject({
+  try {
+    await s3
+      .putObject({
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: path.join(req.session.keyPrefix, "settings"),
+        Body: JSON.stringify(req.body)
+      })
+      .promise();
+  } catch (e) {
+    res.status(400).json({ error: "error saving settings: " + e });
+  }
+
+  let content = await s3
+    .getObject({
       Bucket: process.env.S3_BUCKET_NAME,
-      Key: path.join(req.session.keyPrefix, "settings"),
-      Body: JSON.stringify(req.body)
+      Key: path.join(req.session.keyPrefix, "settings")
     })
-    .promise()
-    .then(_ => res.send("ok"))
-    .catch(e => res.status(400).json({ error: "error saving settings: " + e }));
+    .promise();
+  res.send(content.Body.toString());
 });
 
 // JUST FOR TESTING
