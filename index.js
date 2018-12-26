@@ -104,15 +104,19 @@ app.get("/api/settings", async (req, res) => {
   }
 
   // TODO enforce schema + defaults
-
-  let content = await s3
-    .getObject({
-      Bucket: process.env.S3_BUCKET_NAME,
-      Key: path.join(req.session.keyPrefix, "settings")
-    })
-    .promise();
-
-  console.log(content.Body.toString());
+  let content;
+  try {
+    content = await s3
+      .getObject({
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: path.join(req.session.keyPrefix, "settings")
+      })
+      .promise();
+  } catch (e) {
+    if (`${e}`.indexOf("NoSuchKey") > -1) res.json({});
+    else res.status(500).json({ error: e });
+    return;
+  }
 
   res.send(content.Body.toString());
 });
@@ -123,6 +127,9 @@ app.post("/api/settings", async (req, res) => {
   }
   // todo enfore schema, size
   // todo get settings and merge json data so we can toggle individual settings
+
+  console.log(req.body);
+
   try {
     await s3
       .putObject({
