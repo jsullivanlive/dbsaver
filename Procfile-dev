@@ -1,2 +1,2 @@
-backend: nodemon
 frontend: cd frontend && npm start
+backend: LOCALDEV=1 nodemon

@@ -167,9 +167,9 @@ app.get("/api/profile", async (req, res) => {
 
 // app.use(express.static(path.join(__dirname, "frontend/build")));
 app.get("*", (req, res) => {
-  // res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+  if (!process.env.LOCALDEV)
+    return res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
   var newurl = "http://localhost:5100" + req.url;
-  console.log(newurl);
   request(newurl).pipe(res);
 });
 
