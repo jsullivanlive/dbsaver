@@ -48,9 +48,14 @@ class Settings extends Component {
           <p>settings:</p>
           <div>
             <Switch
-              name="Daily updates"
+              name="Daily Checkpoint"
               value={this.state.daily}
               onChange={val => this.setState({ daily: val })}
+            />
+            <Switch
+              name="Daily Email"
+              value={this.state.dailyEmail}
+              onChange={val => this.setState({ dailyEmail: val })}
             />
           </div>
           <div>

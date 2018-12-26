@@ -12,14 +12,14 @@ class Switch extends Component {
         <input
           type="checkbox"
           class="custom-control-input"
-          id="customSwitch1"
+          id={this.props.name}
           onChange={event => {
             this.setState({ value: event.target.checked });
             this.props.onChange(event.target.checked);
           }}
           checked={this.state.value}
         />
-        <label class="custom-control-label" for="customSwitch1">
+        <label class="custom-control-label" for={this.props.name}>
           {this.props.name}
         </label>
       </div>
