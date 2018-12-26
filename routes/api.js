@@ -1,18 +1,7 @@
 const express = require("express");
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
-
-function getConnection(session) {
-  return new jsforce.Connection({
-    oauth2: { oauth2 },
-    accessToken: session.accessToken,
-    instanceUrl: session.instanceUrl
-  });
-}
-
-async function q(session, soql) {
-  return getConnection(session).query(soql);
-}
+const { q } = require("../src/salesforce");
 
 const app = express.Router();
 

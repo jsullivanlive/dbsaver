@@ -13,7 +13,7 @@ Learn all the key things about your org(s), check performance, know in advance a
 ## TODO
 
 - [x] salesforce auth
-- [ ] add settings so user can turn on/off alerts
+- [x] add settings so user can turn on/off alerts
 - [ ] alert about new users being created, especially ones with bigger privs
 - [ ] send email when new oauths are being used a lot
 - [ ] send email when managed packages are updated
