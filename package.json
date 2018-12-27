@@ -33,6 +33,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
-    "jsforce": "^1.9.1"
+    "jsforce": "^1.9.1",
+    "sendgrid": "^5.2.3"
   }
 }
