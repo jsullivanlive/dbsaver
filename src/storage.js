@@ -34,13 +34,30 @@ async function put(key, content, jsonStringify = true) {
     .promise();
 }
 
+async function archive(keyPrefix, localPath, content) {
+  if (!localPath) throw new Error("missing localPath");
+  let fullKeyPath = path.join(keyPrefix, localPath, new Date().toISOString());
+  return put(fullKeyPath, content);
+}
+
 async function archiveRestObject(keyPrefix, obj) {
-  let key = path.join(keyPrefix, obj.attributes.url, new Date().toISOString());
-  return put(key, obj);
+  return archive(keyPrefix, obj.attributes.url, obj);
+}
+
+function signedGetUrl(key, seconds) {
+  var params = {
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: key,
+    Expires: seconds
+  };
+  return s3.getSignedUrl("getObject", params);
 }
 
 module.exports = {
   getConnections: getConnections,
   get: get,
-  archiveRestObject: archiveRestObject
+  put: put,
+  archive: archive,
+  archiveRestObject: archiveRestObject,
+  signedGetUrl: signedGetUrl
 };
