@@ -2,7 +2,7 @@ const express = require("express");
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
 const { q } = require("../src/salesforce");
-
+const path = require("path");
 const app = express.Router();
 
 app.get("/user_count", async (req, res) => {
@@ -31,7 +31,7 @@ app.get("/settings", async (req, res) => {
       .promise();
   } catch (e) {
     if (`${e}`.indexOf("NoSuchKey") > -1) res.json({});
-    else res.status(500).json({ error: e });
+    else res.status(500).json({ error: `${e}` });
     return;
   }
 
