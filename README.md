@@ -15,7 +15,7 @@ Learn all the key things about your org(s), check performance, know in advance a
 - [x] salesforce auth
 - [x] add settings so user can turn on/off alerts
 - [x] generate image with map of recent sessions to spot weird locations
-- [ ] show top locations
+- [x] show top browsers in bar chart
 - [ ] show new locations
 - [ ] show new oauth apps
 - [ ] show popular browsers
