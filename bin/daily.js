@@ -33,12 +33,24 @@ async function sendEmail(keyPrefix) {
   let desc = await conn.describeGlobal();
   storage.archive(keyPrefix, "_describeGlobal", desc);
 
+  let organization = await conn
+    .sobject("Organization")
+    .select("*")
+    .execute();
+
+  if (organization.length != 1)
+    throw new Error("organization count != 1: " + organization.length);
+  organization = organization[0];
+  storage.archiveRestObject(keyPrefix, organization);
+
   // TODO make config way to do this
   let stats = await Promise.all([
     require("../src/stats/sessions")(keyPrefix, conn, storage)
   ]);
 
-  var emailContent = stats.map(s => s.html).join("<hr/>");
+  var emailContent =
+    `<h1>Daily System Report for ${organization.Name}</h1>` +
+    stats.map(s => s.html).join("<hr/>");
 
   mail.send(
     email,
