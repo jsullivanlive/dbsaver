@@ -50,9 +50,12 @@ async function sendEmail(keyPrefix) {
     require("../src/stats/setupAuditTrail")(keyPrefix, conn, storage)
   ]);
 
-  var emailContent =
-    `<h1>Daily System Report for ${organization.Name}</h1>` +
-    stats.map(s => s.html).join("<hr/>");
+  var emailContent = `
+    <div style="font-family: Arial, Helvetica, sans-serif;">
+      <h1>Daily System Report for ${organization.Name}</h1>
+      ${stats.map(s => s.html).join("<hr/>")}
+    </div>
+  `;
 
   fs.writeFileSync("temp.html", emailContent);
   require("open")("./temp.html");

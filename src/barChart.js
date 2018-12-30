@@ -7,18 +7,20 @@ function barChart(values) {
     return `${100 * (values[k] / max)}%`;
   };
   const sortedKeys = Object.keys(values).sort((a, b) => width(b) - width(a));
+  const bar = k => `
+    <div style="
+      padding: 2px;
+      margin: 2px;
+      background-color: rgb(105, 109, 195); 
+      width: ${width(k)}">
+      ${k}
+    </div>
+  `;
   return `
-        <div>
-            ${sortedKeys
-              .map(
-                k =>
-                  `<div style="background-color: red; width: ${width(
-                    k
-                  )}">${k}</div>`
-              )
-              .join("")}
-        </div>
-    `;
+    <div>
+      ${sortedKeys.map(bar).join("")}
+    </div>
+  `;
 }
 
 module.exports = barChart;
