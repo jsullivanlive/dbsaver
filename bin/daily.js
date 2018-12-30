@@ -46,7 +46,8 @@ async function sendEmail(keyPrefix) {
   // TODO make config way to do this
   let stats = await Promise.all([
     require("../src/stats/sessions")(keyPrefix, conn, storage),
-    require("../src/stats/apiUsage")(keyPrefix, conn, storage)
+    require("../src/stats/apiUsage")(keyPrefix, conn, storage),
+    require("../src/stats/auditLog")(keyPrefix, conn, storage)
   ]);
 
   var emailContent =
