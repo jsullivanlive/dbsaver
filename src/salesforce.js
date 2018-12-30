@@ -19,9 +19,9 @@ function getConnection(session) {
 
 async function thawConnection(keyPrefix, refreshNow = false) {
   const authKey = path.join(keyPrefix, "auth");
-  let auth = await storage.get(authKey);
+  const accessTokenKey = path.join(keyPrefix, "auth_accessToken");
 
-  // TODO cache the connection so we don't refresh every 5 mins
+  let auth = await storage.get(authKey);
 
   return new Promise(async (resolve, reject) => {
     var conn = new jsforce.Connection({
@@ -30,8 +30,15 @@ async function thawConnection(keyPrefix, refreshNow = false) {
       accessToken: auth.accessToken,
       refreshToken: auth.refreshToken
     });
+    try {
+      conn.accessToken = await storage.get(accessTokenKey);
+    } catch (e) {
+      console.log("Ignoring error when reloading sessoin id:", e);
+      // ignore, will be fixed on restart
+    }
     conn.on("refresh", function(accessToken, res) {
       console.log("JSFORCE REFRESH HAPPENED", accessToken, res);
+      storage.put(accessTokenKey, accessToken);
     });
     if (refreshNow === true) {
       let res = await conn.oauth2.refreshToken(refreshToken);
