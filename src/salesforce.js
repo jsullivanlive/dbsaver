@@ -1,4 +1,6 @@
 const jsforce = require("jsforce");
+const storage = require("./storage");
+const path = require("path");
 
 const oauth2 = new jsforce.OAuth2({
   loginUrl: "https://login.salesforce.com",
@@ -15,7 +17,12 @@ function getConnection(session) {
   });
 }
 
-async function thawConnection(auth, refreshNow = false) {
+async function thawConnection(keyPrefix, refreshNow = false) {
+  const authKey = path.join(keyPrefix, "auth");
+  let auth = await storage.get(authKey);
+
+  // TODO cache the connection so we don't refresh every 5 mins
+
   return new Promise(async (resolve, reject) => {
     var conn = new jsforce.Connection({
       oauth2: oauth2,
@@ -24,7 +31,7 @@ async function thawConnection(auth, refreshNow = false) {
       refreshToken: auth.refreshToken
     });
     conn.on("refresh", function(accessToken, res) {
-      console.log("JSFORCE REFRESH HAPPENED");
+      console.log("JSFORCE REFRESH HAPPENED", accessToken, res);
     });
     if (refreshNow === true) {
       let res = await conn.oauth2.refreshToken(refreshToken);

@@ -1,6 +1,7 @@
 const StaticMaps = require("staticmaps");
 const path = require("path");
 const fs = require("fs");
+const barChart = require("../barChart");
 
 async function sessions(keyPrefix, conn, storage) {
   let sessions = await conn
@@ -66,18 +67,8 @@ async function sessions(keyPrefix, conn, storage) {
         <img src="${mapUrl}"/>
       </div>
       <h3>Popular Browsers</h3>
-      <div style="width: 100%; border: 1px solid #333;">
-      ${Object.keys(browsers)
-        .sort((a, b) => browsers[b] - browsers[a])
-        .map(
-          b =>
-            `<div style="width: ${(browsers[b] / sessions.length) *
-              100}%; background-color: #bbc; margin-bottom: 2px; margin-top: 2px; padding: 2px;">${b} (${
-              browsers[b]
-            })</div>`
-        )
-        .join("")}
-      </div>
+      ${barChart(browsers)}
+      
     `
   };
 }

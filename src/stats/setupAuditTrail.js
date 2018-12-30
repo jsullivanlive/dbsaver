@@ -1,8 +1,11 @@
+const barChart = require("../barChart");
+
 var groupBy = function(xs, key) {
   return xs.reduce(function(rv, x) {
     (rv[x[key]] = rv[x[key]] || []).push(x);
     return rv;
   }, {});
+  bg;
 };
 
 async function setupAuditTrail(keyPrefix, conn, storage) {
@@ -21,9 +24,10 @@ async function setupAuditTrail(keyPrefix, conn, storage) {
     html: `
       <div>
         <h3>System Audit Trail Changes</h3>
-        <div>${JSON.stringify(actions.join("<br/>"))}</div>
+        ${barChart(actions)}
+        <div>${actions.join("<br/>")}</div>
         <h3>Impersonated Users</h3>
-        <div>${JSON.stringify(impersonatedUsers).join("<br/>")}</div>
+        <div>${impersonatedUsers.join("<br/>")}</div>
       </div>
     `
   };
