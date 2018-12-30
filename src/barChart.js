@@ -10,7 +10,8 @@ function barChart(values) {
   const bar = k => `
     <div style="
       padding: 2px;
-      margin: 2px;
+      margin-top: 2px;
+      margin-bottom: 2px;
       background-color: rgb(105, 109, 195); 
       width: ${width(k)}">
       ${k}

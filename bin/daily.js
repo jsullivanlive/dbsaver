@@ -51,9 +51,21 @@ async function sendEmail(keyPrefix) {
   ]);
 
   var emailContent = `
-    <div style="font-family: Arial, Helvetica, sans-serif;">
+    <div style="
+      font-family: Arial, Helvetica, sans-serif;
+      border-radius: 4px;
+      border: 1px solid rgb(199, 208, 212);
+      max-width: 720px;
+      color: rgb(47, 41, 54);
+      margin-left: auto;
+      margin-right: auto;
+      ">
       <h1>Daily System Report for ${organization.Name}</h1>
       ${stats.map(s => s.html).join("<hr/>")}
+      <hr/>
+      Notification Settings
+      |
+      Home
     </div>
   `;
 
