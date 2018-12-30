@@ -63,12 +63,11 @@ async function sessions(keyPrefix, conn, storage) {
     failures: sessions.map(sess => sess.LoginHistory.Status !== "Success"),
     sessions_count: sessions.length,
     html: `
-      <div>
+      <div style="text-align: center; width: 100%;">
         <img src="${mapUrl}"/>
       </div>
       <h3>Popular Browsers</h3>
       ${barChart(browsers)}
-      
     `
   };
 }
