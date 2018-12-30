@@ -1,6 +1,6 @@
-async function auditLog(keyPrefix, conn, storage) {
+async function setupAuditTrail(keyPrefix, conn, storage) {
   let history = await conn
-    .sobject("AuditLog")
+    .sobject("SetupAuditTrail")
     .select("*")
     .execute();
   console.log(history);
@@ -17,4 +17,4 @@ async function auditLog(keyPrefix, conn, storage) {
   };
 }
 
-module.exports = apiUsage;
+module.exports = setupAuditTrail;
