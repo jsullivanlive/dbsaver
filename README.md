@@ -10,6 +10,9 @@ Learn all the key things about your org(s), check performance, know in advance a
     npm i
     nf start -j Procfile-dev
 
+    # run the daily job
+    heroku local:run node bin/daily.js
+
 ## TODO
 
 - [x] salesforce auth
