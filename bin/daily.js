@@ -43,13 +43,15 @@ async function makeEmail(keyPrefix) {
   organization = organization[0];
   storage.archiveRestObject(keyPrefix, organization);
 
-  // TODO make config way to do this
-  let stats = await Promise.all([
-    require("../src/stats/sessions")(keyPrefix, conn, storage),
-    require("../src/stats/apiUsage")(keyPrefix, conn, storage),
-    require("../src/stats/maliciousTrafficDetection")(keyPrefix, conn, storage),
-    require("../src/stats/setupAuditTrail")(keyPrefix, conn, storage)
-  ]);
+  let stats = await Promise.all(
+    [
+      "../src/stats/sessions",
+      "../src/stats/users",
+      "../src/stats/apiUsage",
+      "../src/stats/maliciousTrafficDetection",
+      "../src/stats/setupAuditTrail"
+    ].map(f => require(f)(keyPrefix, conn, storage))
+  );
 
   return `
     <div style="
@@ -77,14 +79,14 @@ async function makeEmail(keyPrefix) {
 }
 
 async function sendEmail(keyPrefix) {
-  fs.writeFileSync("temp.html", await makeEmail(keyPrefix));
-  require("open")("./temp.html");
+  // fs.writeFileSync("temp.html", await makeEmail(keyPrefix));
+  // require("open")("./temp.html");
   // process.exit();
-  // mail.send(
-  //   email,
-  //   `Daily System Status ${new Date().toISOString()}`,
-  //   emailContent
-  // );
+  mail.send(
+    email,
+    `Daily System Status ${new Date().toISOString()}`,
+    await makeEmail(keyPrefix)
+  );
 }
 
 (async () => {
