@@ -53,6 +53,12 @@ async function sessions(keyPrefix, conn, storage) {
       console.log(err);
     });
   var browsers = {};
+
+  let oauthApps = {};
+  for (const a of sessions.map(s => s.LoginHistory.Application)) {
+    oauthApps[a] = (oauthApps[a] || 0) + 1;
+  }
+
   sessions
     .map(sess => sess.LoginHistory.Browser)
     .map(b => (browsers[b] ? browsers[b]++ : (browsers[b] = 1)));
@@ -68,6 +74,8 @@ async function sessions(keyPrefix, conn, storage) {
       </div>
       <h3>Popular Browsers</h3>
       ${barChart(browsers)}
+      <h3>Connected Apps</h3>
+      ${barChart(oauthApps)}
     `
   };
 }
