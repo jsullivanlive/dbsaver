@@ -19,6 +19,12 @@ Learn all the key things about your org(s), check performance, know in advance a
 - [x] add settings so user can turn on/off alerts
 - [x] generate image with map of recent sessions to spot weird locations
 - [x] show top browsers in bar chart
+- [ ] strange IPs
+- [ ] malicious urls
+- [ ] large loads alert
+- [ ] new reports/dashboards
+- [ ] transaction timing
+- [ ] scan for bad urls from blocklists
 - [ ] show something from setup audit trail
 - [ ] show new locations
 - [ ] show new oauth apps
@@ -29,15 +35,11 @@ Learn all the key things about your org(s), check performance, know in advance a
 - [ ] send email when tests fail and say what was in the audit trail
 - [ ] send email about new logins
 - [ ] audit trail alerts
-- [ ] strange IPs
-- [ ] large loads alert
 - [ ] largest approval process bottlenecks alert
 - [ ] stale records alerts
-- [ ] new reports/dashboards
 - [ ] stats borrowed from logz, checkmarx, tinfoil, etc.
 - [ ] dead man switch
 - [ ] load testing
-- [ ] transaction timing
 
 ### Original Ideas:
 

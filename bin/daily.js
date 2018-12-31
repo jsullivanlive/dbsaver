@@ -17,7 +17,7 @@ async function filterEnabled(keys) {
   return res;
 }
 
-async function sendEmail(keyPrefix) {
+async function makeEmail(keyPrefix) {
   console.log("sending email: ", keyPrefix);
   // TODO loop through files in stats folder to process dynamically
   const auth = await storage.get(path.join(keyPrefix, "auth"));
@@ -47,10 +47,11 @@ async function sendEmail(keyPrefix) {
   let stats = await Promise.all([
     require("../src/stats/sessions")(keyPrefix, conn, storage),
     require("../src/stats/apiUsage")(keyPrefix, conn, storage),
+    require("../src/stats/maliciousTrafficDetection")(keyPrefix, conn, storage),
     require("../src/stats/setupAuditTrail")(keyPrefix, conn, storage)
   ]);
 
-  var emailContent = `
+  return `
     <div style="
       font-family: Arial, Helvetica, sans-serif;
       border-radius: 4px;
@@ -68,10 +69,12 @@ async function sendEmail(keyPrefix) {
       Home
     </div>
   `;
+}
 
-  fs.writeFileSync("temp.html", emailContent);
+async function sendEmail(keyPrefix) {
+  fs.writeFileSync("temp.html", await makeEmail(keyPrefix));
   require("open")("./temp.html");
-
+  process.exit();
   // mail.send(
   //   email,
   //   `Daily System Status ${new Date().toISOString()}`,
