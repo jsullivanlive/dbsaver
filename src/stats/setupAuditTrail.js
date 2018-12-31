@@ -1,11 +1,12 @@
 const barChart = require("../barChart");
 
-var groupBy = function(xs, key) {
-  return xs.reduce(function(rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
-  bg;
+const groupBy = (rows, key) => {
+  let result = {};
+  for (const row of rows) {
+    if (!result[row[key]]) result[row[key]] = 0;
+    result[row[key]]++;
+  }
+  return result;
 };
 
 async function setupAuditTrail(keyPrefix, conn, storage) {
@@ -17,17 +18,19 @@ async function setupAuditTrail(keyPrefix, conn, storage) {
   // backup audit history since salesforce deletes it after 6 months
   storage.archive(keyPrefix, "SetupAuditTrail", history);
 
-  let actions = Object.keys(groupBy(history, "Action"));
-  let impersonatedUsers = Object.keys(groupBy(history, "DelegateUser"));
+  let actions = groupBy(history, "Action");
+  let impersonatedUsers = groupBy(
+    history.filter(h => h.DelegateUser),
+    "DelegateUser"
+  );
 
   return {
     html: `
       <div>
         <h3>System Audit Trail Changes</h3>
         ${barChart(actions)}
-        <div>${actions.join("<br/>")}</div>
         <h3>Impersonated Users</h3>
-        <div>${impersonatedUsers.join("<br/>")}</div>
+        ${barChart(impersonatedUsers)}
       </div>
     `
   };
