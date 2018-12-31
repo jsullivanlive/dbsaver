@@ -1,6 +1,10 @@
 const fs = require("fs");
 const request = require("request");
 
+if (!fs.existsSync("./temp")) {
+  fs.mkdirSync("./temp");
+}
+
 async function download(url, file) {
   return new Promise((resolve, reject) => {
     request(url)
