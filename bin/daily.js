@@ -61,7 +61,12 @@ async function makeEmail(keyPrefix) {
       margin-left: auto;
       margin-right: auto;
       ">
-      <h1>Daily System Report for ${organization.Name}</h1>
+      <img style="
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      " src="http://localhost:5000/public/logo-dark.png"/>
+      <h2>Daily System Report for ${organization.Name}</h2>
       ${stats.map(s => s.html).join("<hr/>")}
       <hr/>
       Notification Settings
@@ -74,7 +79,7 @@ async function makeEmail(keyPrefix) {
 async function sendEmail(keyPrefix) {
   fs.writeFileSync("temp.html", await makeEmail(keyPrefix));
   require("open")("./temp.html");
-  process.exit();
+  // process.exit();
   // mail.send(
   //   email,
   //   `Daily System Status ${new Date().toISOString()}`,

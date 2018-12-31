@@ -37,7 +37,7 @@ async function thawConnection(keyPrefix, refreshNow = false) {
       // ignore, will be fixed on restart
     }
     conn.on("refresh", function(accessToken, res) {
-      console.log("JSFORCE REFRESH HAPPENED", accessToken, res);
+      // console.log("JSFORCE REFRESH HAPPENED", accessToken, res);
       storage.put(accessTokenKey, accessToken);
     });
     if (refreshNow === true) {
