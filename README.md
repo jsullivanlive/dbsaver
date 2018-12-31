@@ -19,7 +19,8 @@ Learn all the key things about your org(s), check performance, know in advance a
 - [x] add settings so user can turn on/off alerts
 - [x] generate image with map of recent sessions to spot weird locations
 - [x] show top browsers in bar chart
-- [ ] strange IPs
+- [x] strange IPs
+- [x] api usage
 - [ ] malicious urls
 - [ ] large loads alert
 - [ ] new reports/dashboards

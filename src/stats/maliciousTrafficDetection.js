@@ -32,7 +32,7 @@ async function maliciousTrafficDetection(keyPrefix, conn, storage) {
   return {
     html: `
         <div>
-            <h3><img src="http://localhost:5000/public/${icon}"/>Malicious traffic Detection</h3>
+            <h3><img src="https://app.dbsaver.com/public/${icon}"/>Malicious traffic Detection</h3>
             <p>Scannig ${sessions.length} sessions with ${
       ips.length
     } IP addresses against blocklists with ${blockList.length} IP addresses.</p>
