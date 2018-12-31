@@ -4,16 +4,17 @@ function barChart(values) {
     if (max < values[k]) max = values[k];
   }
   const width = k => {
-    return `${100 * (values[k] / max)}%`;
+    return 100 * (values[k] / max);
   };
   const sortedKeys = Object.keys(values).sort((a, b) => width(b) - width(a));
   const bar = k => `
     <div style="
-      padding: 2px;
+      padding-top: 2px;
+      padding-bottom: 2px;
       margin-top: 2px;
       margin-bottom: 2px;
-      background-color: rgb(105, 109, 195); 
-      width: ${width(k)}">
+      background-color: rgb(182, 186, 239); 
+      width: ${width(k)}%">
       ${k}
     </div>
   `;
