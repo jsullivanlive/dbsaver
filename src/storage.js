@@ -10,6 +10,7 @@ async function getConnections() {
     })
     .promise();
   // FIXME filter on s3 side
+  // TODO paginate
   return keys.Contents.filter(k => k.Key.endsWith("/auth"));
 }
 

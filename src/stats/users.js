@@ -16,6 +16,12 @@ async function users(keyPrefix, conn, storage) {
     )
     .execute();
 
+  const profilesChanged = await conn
+    .sobject("Profile")
+    .select("*")
+    .where("SystemModstamp >= last_n_days:7")
+    .execute();
+
   // TODO check user changes over the last 7 days
   // TODO show the users created
   // TODO show admin changes especially
@@ -40,6 +46,9 @@ async function users(keyPrefix, conn, storage) {
               ? adminChanges.map(u => `<div>${u.Username}</div>`).join("")
               : "No recent admin changes"
           }
+          <h3>Profiles Changed</h3>
+          ${profilesChanged.map(u => `<div>${u.Username}</div>`).join("") ||
+            "No recent admin changes"}
         </div>
       `
   };
